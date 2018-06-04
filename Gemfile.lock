@@ -1,0 +1,21 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    ffi (1.9.25)
+    hobby (0.1.2)
+      rack
+    puma (3.11.4)
+    rack (2.0.5)
+    rbnacl (5.0.0)
+      ffi
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  hobby
+  puma
+  rbnacl
+
+BUNDLED WITH
+   1.16.1
