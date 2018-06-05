@@ -2,11 +2,14 @@ require 'puma'
 require 'rbnacl'
 require 'base64'
 require 'hobby'
+require 'hobby/cors'
 
 require_relative 'apps/start_session'
 
 class Root
   include Hobby
+
+  use Cors
 
   map '/start_session', StartSession.new
 end
