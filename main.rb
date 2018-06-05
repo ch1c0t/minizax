@@ -8,6 +8,7 @@ require_relative 'constants'
 require_relative 'helpers'
 require_relative 'apps/start_session'
 require_relative 'apps/verify_session'
+require_relative 'apps/prove'
 
 class Root
   include Hobby
@@ -16,6 +17,7 @@ class Root
 
   map '/start_session', StartSession.new
   map '/verify_session', VerifySession.new
+  map '/prove', Prove.new
 end
 
 server = Puma::Server.new Root.new
