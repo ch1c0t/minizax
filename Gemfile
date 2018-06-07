@@ -5,3 +5,6 @@ gem 'rbnacl'
 
 gem 'hobby'
 gem 'hobby-cors'
+
+gem 'pry'
+gem 'pry-byebug'
