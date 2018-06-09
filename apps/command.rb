@@ -51,10 +51,17 @@ class Command
       storage_token = h2 "#{@hpk}#{nonce_in_b64}"
     end
 
+    # redis hash of all messages to given hpk
+    def hpk_tag
+      "msg_#{@hpk}"
+    end
+
+    # redis key for specific message to hpk
     def msg_tag nonce_in_b64
       "msg_#{@hpk}_#{nonce_in_b64}"
     end
 
+    # message storage token that can be inspected later by sender
     def token_tag token
       "token_#{token.to_b64}"
     end
