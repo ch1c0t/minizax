@@ -23,6 +23,8 @@ class Command
       render_encrypted rsp_nonce, count(hpk)
     when 'download'
       render_encrypted rsp_nonce, download(hpk, data)
+    when 'delete'
+      delete hpk, data
     end
   end
 
@@ -69,6 +71,12 @@ class Command
         message
       end
     end
+
+    def delete_list nonces
+      nonces.each do |nonce|
+        MESSAGES[@hpk].delete nonce
+      end
+    end
   end
 
   def upload hpk, data
@@ -87,6 +95,12 @@ class Command
 
   def download hpk, _data
     Mailbox.new(hpk.to_b64).all
+  end
+
+  def delete hpk, data
+    mailbox = Mailbox.new hpk.to_b64
+    mailbox.delete_list data[:payload]
+    mailbox.count
   end
 
 
