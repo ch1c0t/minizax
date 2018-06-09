@@ -57,6 +57,19 @@ class Command
       MESSAGES[@hpk].count
     end
 
+    def all
+      MESSAGES[@hpk].values.map do |item|
+        message = JSON.parse item.to_s
+        message = message.map do |k, v|
+          v = k != 'time' ? v.from_b64.force_encoding('utf-8') : v
+          [k.to_sym, v]
+        end.to_h
+        message[:from] = message[:from].to_b64
+        message[:nonce] = message[:nonce].to_b64
+        message
+      end
+    end
+
     # redis hash of all messages to given hpk
     def hpk_tag
       "msg_#{@hpk}"
@@ -87,8 +100,8 @@ class Command
     mailbox.count
   end
 
-  def download _hpk, _data
-    []
+  def download hpk, _data
+    Mailbox.new(hpk.to_b64).all
   end
 
 
