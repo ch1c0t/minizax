@@ -4,4 +4,6 @@ RELAY_TOKENS = {}
 SESSION_KEYS = {}
 CLIENT_KEYS = {}
 
-MESSAGES = {}
+MESSAGES = Hash.new do |hash, key|
+  hash[key] = {}
+end

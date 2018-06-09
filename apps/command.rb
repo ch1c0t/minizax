@@ -19,6 +19,8 @@ class Command
     case cmd
     when 'upload'
       upload hpk, data
+    when 'count'
+      render_encrypted rsp_nonce, count(hpk)
     when 'download'
       render_encrypted rsp_nonce, download(hpk, data)
     end
@@ -41,7 +43,7 @@ class Command
         kind: :message.to_s.to_b64,
       }
 
-      MESSAGES[msg_tag nonce_in_b64] = item.to_json
+      MESSAGES[@hpk][nonce_in_b64] = item.to_json
 
       storage_record = {
         hpk: @hpk,
@@ -49,6 +51,10 @@ class Command
       }
 
       storage_token = h2 "#{@hpk}#{nonce_in_b64}"
+    end
+
+    def count
+      MESSAGES[@hpk].count
     end
 
     # redis hash of all messages to given hpk
@@ -74,6 +80,11 @@ class Command
     nonce = _make_nonce
 
     mailbox.store(hpk, nonce, message).to_b64
+  end
+
+  def count hpk
+    mailbox = Mailbox.new hpk.to_b64
+    mailbox.count
   end
 
   def download _hpk, _data
