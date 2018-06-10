@@ -23,6 +23,8 @@ class Command
       render_encrypted rsp_nonce, count(hpk)
     when 'download'
       render_encrypted rsp_nonce, download(hpk, data)
+    when 'messageStatus'
+      messageStatus hpk, data
     when 'delete'
       delete hpk, data
     end
@@ -77,6 +79,10 @@ class Command
         MESSAGES[@hpk].delete nonce
       end
     end
+
+    def check_msg_status _storage_token
+      1
+    end
   end
 
   def upload hpk, data
@@ -101,6 +107,11 @@ class Command
 
   def download hpk, _data
     Mailbox.new(hpk.to_b64).all
+  end
+
+  def messageStatus hpk, data
+    mailbox = Mailbox.new hpk.to_b64
+    mailbox.check_msg_status data[:token].from_b64
   end
 
   def delete hpk, data
