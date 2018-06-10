@@ -82,7 +82,13 @@ class Command
   def upload hpk, data
     mailbox = Mailbox.new data[:to]
 
-    message = data[:payload]
+    payload = data[:payload]
+    message = case payload
+              when String
+                payload
+              when Hash
+                payload[:ctext]
+              end
     nonce = _make_nonce
 
     mailbox.store(hpk, nonce, message).to_b64
