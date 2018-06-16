@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'puma'
-gem 'rbnacl'
+gem 'rbnacl-libsodium'
 
 gem 'hobby'
 gem 'hobby-cors'
