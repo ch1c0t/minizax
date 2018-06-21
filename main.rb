@@ -13,6 +13,8 @@ require_relative 'errors/all'
 
 require_relative 'constants'
 require_relative 'helpers'
+require_relative 'token'
+
 require_relative 'apps/start_session'
 require_relative 'apps/verify_session'
 require_relative 'apps/prove'

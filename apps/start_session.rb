@@ -2,16 +2,18 @@ class StartSession
   include Hobby
 
   post do
-    b64_client_token = request.body.read 44
-    client_token = if b64_client_token&.size == 44
-                     b64_client_token.from_b64
-                   end
+    body = request.body.read 44
 
-    if b64_client_token
-      if client_token&.size == 32
-        relay_token = Base64.strict_encode64 RbNaCl::Random.random_bytes 32
-        difficulty = 0
+    if body
+      begin
+        client_token = Token.from_b64 body
+      rescue ArgumentError # if the body contains invalid base64
+        response.status = 401
+        halt
+      end
 
+      if client_token.valid?
+        relay_token, difficulty = Token.new, 0
         "#{relay_token}\r\n#{difficulty}"
       else
         response.status = 401
