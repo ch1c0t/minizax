@@ -12,8 +12,12 @@ class StartSession
         halt
       end
 
+      h2_of_client_token = h2 client_token.bytes
+      CLIENT_TOKENS[h2_of_client_token] = client_token.bytes
+
       if client_token.valid?
         relay_token, difficulty = Token.new, 0
+        RELAY_TOKENS[h2_of_client_token] = relay_token.bytes
         "#{relay_token}\r\n#{difficulty}"
       else
         response.status = 401

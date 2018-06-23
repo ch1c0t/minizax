@@ -10,6 +10,8 @@ class Token
     @b64 = Base64.strict_encode64 bytes
   end
 
+  attr_reader :bytes
+
   def to_s
     @b64
   end
